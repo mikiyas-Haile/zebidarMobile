@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import {faComment, faEdit, faTrashAlt} from '@fortawesome/free-regular-svg-icons';
 
 export function Groupslist(props){
+  var token = props.token
+  console.log(token)
     const [groups, setgroups] = useState([])
   
     useEffect(()=>{
@@ -17,23 +19,21 @@ export function Groupslist(props){
           alert("There was an error")
         }
       }
-      loadGroups(myCallback)
+      loadGroups(myCallback,token)
     }, [])
     return (<div>
       {groups.map((item, index)=>{
-        return <Group group={item} key={`${index}`}/>
+        return <Group token={token} group={item} key={`${index}`}/>
       })}</div>
     );
   }
 function ProfileImg(props){
   const {group} = props
-  return <div style={{display: 'block',width: '55px',marginRight: '5px', background: '#9b384c',borderRadius: '100%', fontSize: '35px'}} className="group_name"><span style={{color: 'white',display: 'flex', justifyContent: 'center'}}>{group.title[0]}</span></div>
+  return <div style={{display: 'block',width: '55px',marginRight: '5px', background: '#fe2c55',borderRadius: '10%', fontSize: '35px'}} className="group_name"><span style={{color: 'white',display: 'flex', justifyContent: 'center'}}>{group.title[0]}</span></div>
 }
 
-
-
 function ActionBtns(props){
-  const {group,action, didPerformAction} = props 
+  const {group,action, didPerformAction,token} = props 
   const [hasLiked, setHasLiked] = useState(group.has_liked? group.has_liked : false)
   const [likes, setLikes] = useState(group.likes ? group.likes : 0)
 
@@ -47,10 +47,10 @@ function ActionBtns(props){
     event.preventDefault()
     if (action.type === 'like'){
       if (hasLiked){
-          apiGroupAction(group.id, 'unlike', handleActionBackendEvent)
+          apiGroupAction(group.id, 'unlike',token, handleActionBackendEvent)
           setHasLiked(false)
         }else{
-          apiGroupAction(group.id, 'like', handleActionBackendEvent)
+          apiGroupAction(group.id, 'like',token, handleActionBackendEvent)
           setHasLiked(true)
         }
     }
@@ -70,7 +70,7 @@ function ActionBtns(props){
 
 
 function Group(props){
-  const {group} = props
+  const {group,token} = props
   return <div style={{padding: '3px'}} className='padding'>
     <div style={{display: 'flex', border: '1px solid #fe2c55',backgroundColor: 'white', padding: '10px'}} className='cats'>
       <div className="right-part">
@@ -79,7 +79,7 @@ function Group(props){
           <strong style={{fontSize:'30px'}}>{ group.title }</strong>
         </div>
         <div >{group.about}</div>
-        <ActionBtns  group={group} action={{type:'like'}}/>
+        <ActionBtns token={token} group={group} action={{type:'like'}}/>
         <span style={{fontSize:'30px', paddingRight:'10px'}}>{ group.posts }</span>
         <FontAwesomeIcon onClick = {() => props.navigation.navigate('comment', {statusId:status.id})} className='hover:text-red-500' style={{color:'#2c3e50'}} size={ 20 } icon={faComment} />
         {/* <span style={{fontSize:'30px', float:'right'}}>view</span> */}

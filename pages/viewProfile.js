@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import MyProfile from '../screens/viewProfile/profile'
+import ViewProfile from '../screens/viewProfile/viewProfile'
 import {FlatList, TouchableOpacity, ScrollView} from 'react-native';
 
 export function ProfileScreen(props) {
-    console.log(props)
+    var user = props.route.params.user
     var token = props.route.params.token
     return (
         <ScrollView>
-            <MyProfile token={token} navigation={props.navigation}/>
-        </ScrollView>
+            <ViewProfile token={token} navigation={props.navigation}/>
+        </ScrollView> 
     )
 }

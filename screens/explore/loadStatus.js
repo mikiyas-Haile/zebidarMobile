@@ -2,7 +2,7 @@
 export default function loadStatuss(callback) {
     const xhr = new XMLHttpRequest()
     const method = 'GET' // "POST"
-    const url = "http://localhost:8000/api/status"
+    const url = "https://zebidar-api-v2.herokuapp.com/api/status"
     const responseType = "json"
     xhr.responseType = responseType
     xhr.open(method, url)

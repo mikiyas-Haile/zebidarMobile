@@ -11,6 +11,7 @@ import {faShareAlt} from '@fortawesome/free-solid-svg-icons';
 import VerifiedIcon from '@mui/icons-material/Verified';
 
 export function StatusList(props) {
+  var token = props.token
     const [statussInit, setStatussInit] = useState([])
     const [statuss, setstatus] = useState([])
     const [statussDidSet, setstatussDidSet] = useState(false)
@@ -31,12 +32,12 @@ export function StatusList(props) {
             alert("There was an error")
           }
         }
-        apiStatusList(handleTweetListLookup)
+        apiStatusList(handleTweetListLookup, token)
       }
     }, [statussInit, statussDidSet, setstatussDidSet])
     return (<div>
       {statuss.map((item, index)=>{
-        return <View><Status navigation={props.navigation} status={item} key={`${index}`}/>
+        return <View><Status token={token} navigation={props.navigation} status={item} key={`${index}`}/>
                     
                     </View>
       })}</div>
@@ -44,7 +45,7 @@ export function StatusList(props) {
 }
 
 function ActionBtns(props){
-    const {status,action, didPerformAction} = props 
+    const {status,action, didPerformAction,token} = props 
     const [hasLiked, setHasLiked] = useState(status.has_liked? status.has_liked : false)
     const [likes, setLikes] = useState(status.likes ? status.likes : 0)
     let comments = status.comments
@@ -54,14 +55,15 @@ function ActionBtns(props){
         setLikes(response.likes? response.likes : likes -1)
       }
     }
+    
     const handleClick = (event) =>{
       event.preventDefault()
       if (action.type === 'like'){
         if (hasLiked){
-            apiStatusAction(status.id, 'unlike', handleActionBackendEvent)
+            apiStatusAction(status.id, 'unlike', token,handleActionBackendEvent)
             setHasLiked(false)
           }else{
-            apiStatusAction(status.id, 'like', handleActionBackendEvent)
+            apiStatusAction(status.id, 'like',token, handleActionBackendEvent)
             setHasLiked(true)
           }
       }
@@ -75,12 +77,12 @@ function ActionBtns(props){
     }else if (action.type === 'comment'){
         return <div><div><FontAwesomeIcon onClick = {() => props.navigation.navigate('comment', {statusId:status.id})} className='hover:text-red-500' style={{color:'#2c3e50'}} size={ 20 } icon={faComment} /></div></div>
     }else if (action.type === 'reply'){
-        return <div><div><FontAwesomeIcon onClick = {() => props.navigation.navigate('reply', {statusId:status.id})} style={{color:'#2c3e50'}} size={ 20 } icon={faShareAlt} /></div></div>
+        return <div><FontAwesomeIcon onClick = {() => props.navigation.navigate('reply', {statusId:status.id})} style={{color:'#2c3e50'}} size={ 20 } icon={faShareAlt} /></div>
     }if (status.is_me){
         if (action.type === 'edit'){
-            return <a href={`/status/edit/${status.id}`}><FontAwesomeIcon style={{color:'#2c3e50'}} size={ 20 } icon={faEdit} /></a>
+            return <div><FontAwesomeIcon onClick = {() => props.navigation.navigate('update', {statusId:status.id})} style={{color:'#2c3e50'}} size={ 20 } icon={faEdit} /></div>
         }else if (action.type === 'delete'){
-            return <a href={`/status/${status.id}/delete`}><FontAwesomeIcon style={{color:'#2c3e50'}} size={ 20 } icon={faTrashAlt} /></a>
+            return <div><FontAwesomeIcon onClick = {() => props.navigation.navigate('delete', {statusId:status.id})} style={{color:'#2c3e50'}} size={ 20 } icon={faTrashAlt} /></div>
         }else{
             return ''
         }
@@ -124,14 +126,14 @@ function StatusImg(props){
 
 }
 function Status(props){
-    const {status} = props
+    const {status, token} = props
           return <div style={ {fontFamily: "Poppins-ExtraLight",borderRadius: '20px',border: '1px solid #fe2c55',margin: '5px',display:'flex',backgroundColor: 'white',} } className="status">
                   <div style={{padding: '5px',display: 'flex',justifyContent: 'spaceBetween'}} className="left-part">
-                          <img style={{ display: 'block',marginRight: '5px',borderRadius: '100%'}} src={`http://localhost:8000${status.author.pfp_url} `} width='40' height='40'/>
+                  <span onClick = {() => props.navigation.navigate('viewProfile', {user:status.author.username})}><img style={{ display: 'block',marginRight: '5px',borderRadius: '100%'}} src={`http://localhost:8000${status.author.pfp_url} `} width='40' height='40'/></span>
                   </div>
                   <div className='right-part'>
                       <div style={{paddingBottom: '5px',paddingTop: '5px'}} className="top-part">
-                        <StatusAuthor  status={status}/> <small> <GetFormattedDate  time={status.date_added}/></small>
+                        <span onClick = {() => props.navigation.navigate('viewProfile', {user:status.author.username})}><StatusAuthor  status={status}/></span> <small> <GetFormattedDate  time={status.date_added}/></small>
                       </div>
                       <div style={{paddingLeft: '5px',paddingBottom: '8px'}} className="middle-part">
                         <div style={{ fontSize: '16px'}} className='status-body'>
@@ -142,11 +144,11 @@ function Status(props){
                         </div>
                       </div>
                       <div style={{width:'250px',display: 'flex',justifyContent: 'space-between', color:'#2c3e50'}} className="last-part">
-                        <ActionBtns navigation={props.navigation}  status={status} action={{type:'like'}}/>
+                        <ActionBtns token={token} status={status} action={{type:'like'}}/>
                         <ActionBtns navigation={props.navigation} status={status} action={{type:'comment'}}/>
                         <ActionBtns navigation={props.navigation} status={status} action={{type:'reply'}}/>
                         <ActionBtns navigation={props.navigation} status={status} action={{type:'edit'}}/>
-                        <ActionBtns navigation={props.navigation} status={status} action={{type:'delete'}}/>
+                        <ActionBtns navigation={props.navigation} status={status} status={status} action={{type:'delete'}}/>
                       </div>
                   </div>
               </div>

@@ -1,22 +1,23 @@
 import React, {useState, useEffect,useContext} from 'react';
 import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 import FavoriteBorderRoundedIcon from '@material-ui/icons/FavoriteBorderRounded';
-import { StyleSheet, Text, Button,View } from 'react-native';
+import { Pressable, Text, StyleSheet,View } from 'react-native';
 import {Card} from 'react-native-paper';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import {faComment, faEdit, faTrashAlt} from '@fortawesome/free-regular-svg-icons';
 import {faShareAlt} from '@fortawesome/free-solid-svg-icons';
 import VerifiedIcon from '@mui/icons-material/Verified';
+import {loadStatuss} from '../screens/posts/loadStatus'
+import {apiStatusAction} from '../screens/posts/apiLookup'
 
-import {apiStatusAction} from './posts/apiLookup'
-
-function loadStatuss(callback,statusId) {
+function loadStatussReply(callback,token,statusId) {
   const xhr = new XMLHttpRequest()
   const method = 'GET' // "POST"
   const url = `http://localhost:8000/api/status/${statusId}`
   const responseType = "json"
   xhr.responseType = responseType
   xhr.open(method, url)
+  xhr.setRequestHeader('Authorization', `Token ${token}`)
   xhr.onload = function() {
     callback(xhr.response, xhr.status)
   }
@@ -28,8 +29,9 @@ function loadStatuss(callback,statusId) {
 }
 
 
-function StatusDetail(props){
+export function StatusShare(props){
   var statusId = props.route.params.statusId
+  var token = props.route.params.token
   const [status, setstatus] = useState([])
   const [author, setAuthor] = useState([])
   const [parent, setParent] = useState([])
@@ -38,7 +40,6 @@ function StatusDetail(props){
     const myCallback = (response, status) => {
       if (status === 200){
         setstatus(response)
-        console.log(response)
         setAuthor(response.author)
         if (response.is_reply){
           setParent(response.parent)
@@ -52,9 +53,23 @@ function StatusDetail(props){
         alert("There was an error")
       }
     }
-    loadStatuss(myCallback, statusId)
+    loadStatussReply(myCallback, token,statusId)
   }, [])
-  return <div style={ {fontFamily: "Poppins-ExtraLight",borderRadius: '20px',border: '1px solid #fe2c55',margin: '5px',display:'flex',backgroundColor: 'white',} } className='status'>
+    const myCallback = (response, status) => {
+      if (status === 200){
+        window.location.reload()
+      } else {
+        alert("There was an error. Please try again later.")
+      }
+    }
+  
+  const handleClick = (event) =>{
+    event.preventDefault()
+    apiStatusAction(statusId, 'reply',token, myCallback)
+    
+  }
+  return (<div>
+            <div style={ {fontFamily: "Poppins-ExtraLight",borderRadius: '20px',border: '1px solid #fe2c55',margin: '5px',display:'flex',backgroundColor: 'white',} } className='status'>
           <div style={{padding: '5px',display: 'flex',justifyContent: 'spaceBetween'}} className="left-part">
             <img style={{ display: 'block',marginRight: '5px',borderRadius: '100%'}} className='rounded-circle' src={`http://localhost:8000${author.pfp_url} `} width='40' height='40'/>
           </div>
@@ -71,17 +86,18 @@ function StatusDetail(props){
               </div>
             </div>
             <div style={{width:'250px',display: 'flex',justifyContent: 'space-between', color:'#2c3e50'}} className='last-part'>
-              <ActionBtns  status={status} action={{type:'like'}}/>
+              <ActionBtns token={token} status={status} action={{type:'like'}}/>
               <ActionBtns navigation={props.navigation} status={status} action={{type:'comment'}}/>
-              <ActionBtns status={status} action={{type:'reply'}}/>
-              <ActionBtns status={status} action={{type:'edit'}}/>
-              <ActionBtns status={status} action={{type:'delete'}}/>
             </div>
           </div>
-        </div>
+            </div>
+            <Pressable style={styles.button} onPress={handleClick}>
+              <Text style={styles.text}>Share to feed</Text>
+          </Pressable>
+        </div>)
 }
 function ActionBtns(props){
-  const {status,action, didPerformAction} = props 
+  const {status,action, didPerformAction,token} = props 
   const [hasLiked, setHasLiked] = useState(status.has_liked? status.has_liked : false)
   const [likes, setLikes] = useState(status.likes ? status.likes : 0)
   let comments = status.comments
@@ -96,10 +112,10 @@ function ActionBtns(props){
     event.preventDefault()
     if (action.type === 'like'){
       if (hasLiked){
-          apiStatusAction(status.id, 'unlike', handleActionBackendEvent)
+          apiStatusAction(status.id, 'unlike',token, handleActionBackendEvent)
           setHasLiked(false)
         }else{
-          apiStatusAction(status.id, 'like', handleActionBackendEvent)
+          apiStatusAction(status.id, 'like',token, handleActionBackendEvent)
           setHasLiked(true)
         }
     }
@@ -112,9 +128,8 @@ function ActionBtns(props){
   }
   }else if (action.type === 'comment'){
       return <div><div><FontAwesomeIcon onClick = {() => props.navigation.navigate('comment', {statusId:status.id})} className='hover:text-red-500' style={{color:'#2c3e50'}} size={ 20 } icon={faComment} /></div></div>
-  }else if (action.type === 'reply'){
-      return <a href={`/status/${status.id}/share`}><div><FontAwesomeIcon style={{color:'#2c3e50'}} size={ 20 } icon={faShareAlt} /></div></a> 
-  }if (status.is_me){
+  }
+  if (status.is_me){
       if (action.type === 'edit'){
           return <a href={`/status/edit/${status.id}`}><FontAwesomeIcon style={{color:'#2c3e50'}} size={ 20 } icon={faEdit} /></a>
       }else if (action.type === 'delete'){
@@ -159,7 +174,20 @@ function StatusAuthorProfile(props){
   }
 }
 const styles = StyleSheet.create({
-
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: '#2c3e50',
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
+  },
 });
-
-export default StatusDetail

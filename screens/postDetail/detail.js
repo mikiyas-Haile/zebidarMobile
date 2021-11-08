@@ -7,29 +7,28 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import {faComment, faEdit, faTrashAlt} from '@fortawesome/free-regular-svg-icons';
 import {faShareAlt} from '@fortawesome/free-solid-svg-icons';
 import VerifiedIcon from '@mui/icons-material/Verified';
-import {loadStatuss} from './loadStatus'
-import {apiStatusAction} from './apiLookup'
 
-function loadStatussReply(callback,statusId) {
-  const xhr = new XMLHttpRequest()
-  const method = 'GET' // "POST"
-  const url = `http://localhost:8000/api/status/${statusId}`
-  const responseType = "json"
-  xhr.responseType = responseType
-  xhr.open(method, url)
-  xhr.onload = function() {
-    callback(xhr.response, xhr.status)
+import {apiStatusAction} from '../posts/apiLookup'
+function loadStatuss(callback,token,statusId) {
+    const xhr = new XMLHttpRequest()
+    const method = 'GET' // "POST"
+    const url = `https://zebidar-api-v2.herokuapp.com/api/status/${statusId}`
+    const responseType = "json"
+    xhr.responseType = responseType
+    xhr.open(method, url)
+    xhr.setRequestHeader('Authorization', `Token ${token}`)
+    xhr.onload = function() {
+      callback(xhr.response, xhr.status)
+    }
+    xhr.onerror = function (e) {
+      console.log(e)
+      callback({"message": "The request was an error"}, 400)
+    }
+    xhr.send()
   }
-  xhr.onerror = function (e) {
-    console.log(e)
-    callback({"message": "The request was an error"}, 400)
-  }
-  xhr.send()
-}
-
-
-function StatusShare(props){
-  var statusId = props.route.params.statusId
+export default function Detail(props){
+  var statusId = props.statusId
+  var token = props.token
   const [status, setstatus] = useState([])
   const [author, setAuthor] = useState([])
   const [parent, setParent] = useState([])
@@ -51,23 +50,9 @@ function StatusShare(props){
         alert("There was an error")
       }
     }
-    loadStatussReply(myCallback, statusId)
+    loadStatuss(myCallback,token, statusId)
   }, [])
-    const myCallback = (response, status) => {
-      if (status === 200){
-        console.log(response)
-        props.navigation.navigate('feed')
-      } else {
-        alert("There was an error")
-      }
-    }
-  
-  const handleClick = (event) =>{
-    event.preventDefault()
-    apiStatusAction(statusId, 'reply', myCallback)
-  }
-  return (<div>
-            <div style={ {fontFamily: "Poppins-ExtraLight",borderRadius: '20px',border: '1px solid #fe2c55',margin: '5px',display:'flex',backgroundColor: 'white',} } className='status'>
+  return <div style={ {fontFamily: "Poppins-ExtraLight",borderRadius: '20px',border: '1px solid #fe2c55',margin: '5px',display:'flex',backgroundColor: 'white',} } className='status'>
           <div style={{padding: '5px',display: 'flex',justifyContent: 'spaceBetween'}} className="left-part">
             <img style={{ display: 'block',marginRight: '5px',borderRadius: '100%'}} className='rounded-circle' src={`http://localhost:8000${author.pfp_url} `} width='40' height='40'/>
           </div>
@@ -84,19 +69,17 @@ function StatusShare(props){
               </div>
             </div>
             <div style={{width:'250px',display: 'flex',justifyContent: 'space-between', color:'#2c3e50'}} className='last-part'>
-              <ActionBtns  status={status} action={{type:'like'}}/>
+              <ActionBtns token={token} status={status} action={{type:'like'}}/>
               <ActionBtns navigation={props.navigation} status={status} action={{type:'comment'}}/>
-              <ActionBtns status={status} action={{type:'reply'}}/>
-              <ActionBtns status={status} action={{type:'edit'}}/>
-              <ActionBtns status={status} action={{type:'delete'}}/>
+              <ActionBtns navigation={props.navigation} status={status} action={{type:'reply'}}/>
+              <ActionBtns navigation={props.navigation} status={status} action={{type:'edit'}}/>
+              <ActionBtns navigation={props.navigation} status={status} action={{type:'delete'}}/>
             </div>
           </div>
-            </div>
-            <div onClick={handleClick}>Share to Feed</div>
-        </div>)
+        </div>
 }
 function ActionBtns(props){
-  const {status,action, didPerformAction} = props 
+  const {status,action, token} = props 
   const [hasLiked, setHasLiked] = useState(status.has_liked? status.has_liked : false)
   const [likes, setLikes] = useState(status.likes ? status.likes : 0)
   let comments = status.comments
@@ -111,10 +94,10 @@ function ActionBtns(props){
     event.preventDefault()
     if (action.type === 'like'){
       if (hasLiked){
-          apiStatusAction(status.id, 'unlike', handleActionBackendEvent)
+          apiStatusAction(status.id, 'unlike',token, handleActionBackendEvent)
           setHasLiked(false)
         }else{
-          apiStatusAction(status.id, 'like', handleActionBackendEvent)
+          apiStatusAction(status.id, 'like',token, handleActionBackendEvent)
           setHasLiked(true)
         }
     }
@@ -127,12 +110,13 @@ function ActionBtns(props){
   }
   }else if (action.type === 'comment'){
       return <div><div><FontAwesomeIcon onClick = {() => props.navigation.navigate('comment', {statusId:status.id})} className='hover:text-red-500' style={{color:'#2c3e50'}} size={ 20 } icon={faComment} /></div></div>
-  }
-  if (status.is_me){
+  }else if (action.type === 'reply'){
+      return <div><FontAwesomeIcon onClick = {() => props.navigation.navigate('reply', {statusId:status.id})} style={{color:'#2c3e50'}} size={ 20 } icon={faShareAlt} /></div>
+  }if (status.is_me){
       if (action.type === 'edit'){
-          return <a href={`/status/edit/${status.id}`}><FontAwesomeIcon style={{color:'#2c3e50'}} size={ 20 } icon={faEdit} /></a>
+          return <div><FontAwesomeIcon onClick = {() => props.navigation.navigate('update', {statusId:status.id})} style={{color:'#2c3e50'}} size={ 20 } icon={faEdit} /></div>
       }else if (action.type === 'delete'){
-          return <a href={`/status/${status.id}/delete`}><FontAwesomeIcon style={{color:'#2c3e50'}} size={ 20 } icon={faTrashAlt} /></a>
+          return <div><FontAwesomeIcon onClick = {() => props.navigation.navigate('delete', {statusId:status.id})} style={{color:'#2c3e50'}} size={ 20 } icon={faTrashAlt} /></div>
       }else{
           return ''
       }
@@ -172,4 +156,6 @@ function StatusAuthorProfile(props){
           <small>@{author.username}</small></span>
   }
 }
-export default StatusShare
+const styles = StyleSheet.create({
+
+});

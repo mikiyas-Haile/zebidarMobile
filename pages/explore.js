@@ -3,10 +3,11 @@ import React, {useEffect, useState} from 'react';
 import ExploreComponent from '../screens/explore/components'
 import {FlatList, TouchableOpacity, ScrollView} from 'react-native';
 
-export default function ExploreScreen({navigation}) {
+export function ExploreScreen(props) {
+    var token = props.route.params.token
     return (
         <ScrollView>
-            <ExploreComponent/>
+            <ExploreComponent token={token} navigation={props.navigation}/>
         </ScrollView>
     )
 }

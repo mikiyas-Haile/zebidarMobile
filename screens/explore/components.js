@@ -3,6 +3,8 @@ import {apiStatusCreate} from './apiLookup';
 import React, {useState, useEffect} from 'react';
 
 export default function ExploreComponent(props){
+    var token = props.token
+    console.log(token)
     const [open, setopen] = useState(false)
     const newPost = (event) =>{
         setopen(true)
@@ -21,7 +23,7 @@ export default function ExploreComponent(props){
     const handleSubmit = (event) => {
         event.preventDefault()
         const newVal = Ref.current.value
-        apiStatusCreate(newVal, handleBackendUpdate)
+        apiStatusCreate(newVal, handleBackendUpdate, token)
         Ref.current.value = ''
         setopen(false)
       }
@@ -38,6 +40,6 @@ export default function ExploreComponent(props){
         </textarea>
         <button type="submit" className='btn'>Post</button>
     </form>: <button onClick={newPost}>New Post</button> } */}
-    <StatusList navigation={props.navigation} newStatuss={newStatuss}/>
+    <StatusList token={token} navigation={props.navigation} newStatuss={newStatuss}/>
     </div>
 }

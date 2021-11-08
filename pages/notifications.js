@@ -3,10 +3,11 @@ import Notificationslist from '../screens/notification/notifications';
 import React, {useEffect, useState} from 'react';
 import {FlatList, TouchableOpacity, ScrollView} from 'react-native';
 
-export default function NotificationScreen({navigation}) {
+export function NotificationScreen(props) {
+    var token = props.route.params.token
     return (
         <ScrollView>
-            <Notificationslist/>
+            <Notificationslist token={token}/>
         </ScrollView>
     )
 }

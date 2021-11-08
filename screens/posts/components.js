@@ -1,9 +1,9 @@
 import {StatusList} from './feed';
 import {apiStatusCreate} from './apiLookup';
 import React, {useState, useEffect} from 'react';
-import {FlatList, TouchableOpacity, ScrollView} from 'react-native';
 
 export default function StatussComponent(props){
+  var token = props.token
     const [open, setopen] = useState(false)
     const newPost = (event) =>{
         setopen(true)
@@ -22,20 +22,23 @@ export default function StatussComponent(props){
     const handleSubmit = (event) => {
         event.preventDefault()
         const newVal = Ref.current.value
-        apiStatusCreate(newVal, handleBackendUpdate)
+        apiStatusCreate(newVal, handleBackendUpdate, token)
         Ref.current.value = ''
         setopen(false)
       }
     
     return <div>
+        {/* <button
+        style={{height:'100px', backgroundColor: '#2c3e50'}}
+        onPress = {() => props.navigation.navigate('Create')}
+        >New Post</button> */}
+        
         { open === true ? <form onSubmit={handleSubmit}>
         <textarea required ref={Ref} className='form-control'>
 
         </textarea>
         <button type="submit" className='btn'>Post</button>
     </form>: <button onClick={newPost}>New Post</button> }
-    <ScrollView>
-    <StatusList navigation={props.navigation} newStatuss={newStatuss}/>
-      </ScrollView>
+    <StatusList token={token} navigation={props.navigation} newStatuss={newStatuss}/>
     </div>
 }

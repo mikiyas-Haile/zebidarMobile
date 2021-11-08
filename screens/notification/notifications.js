@@ -9,6 +9,7 @@ import {GetFormattedDate} from '../getTime'
 import VerifiedIcon from '@mui/icons-material/Verified';
 
 export function Notificationslist(props){
+  var token = props.token
     const [allNotifications, setAllNotifications] = useState([])
   
     useEffect(()=>{
@@ -19,7 +20,7 @@ export function Notificationslist(props){
           alert("There was an error")
         }
       }
-      loadGroups(myCallback)
+      loadGroups(myCallback, token)
     }, [])
     return (
       <ScrollView>

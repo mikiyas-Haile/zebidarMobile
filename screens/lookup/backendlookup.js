@@ -14,18 +14,20 @@ function getCookie(name) {
     return cookieValue;
   }
   
-export function lookup(method, endpoint, callback, data) {
+export function lookup(method, endpoint, callback, token,data) {
+  
+  console.log(token)
   let jsonData;
   if (data){
     jsonData = JSON.stringify(data)
   }
   const xhr = new XMLHttpRequest()
-  const url = `http://localhost:8000/api${endpoint}`
+  const url = `https://zebidar-api-v2.herokuapp.com/api${endpoint}`
   xhr.responseType = "json"
   const csrftoken = getCookie('csrftoken');
   xhr.open(method, url)
   xhr.setRequestHeader("Content-Type", "application/json")
-  // xhr.setRequestHeader('Authorization', `Token 02f3ba811775a5e2a67e8dc9ad8b69c56d0aedbe4561c59ebe984b3a006cf3ed0548c11b5f64cd1b77d1776dfa73991b5baab9e328c9782e69e4d0d655a1f81c`)
+  xhr.setRequestHeader('Authorization', `Token ${token}`)
   xhr.onload = function() {
     callback(xhr.response, xhr.status)
   }

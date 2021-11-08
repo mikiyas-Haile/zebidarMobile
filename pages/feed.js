@@ -1,12 +1,13 @@
-import Feed from '../App';
 import React, {useEffect, useState} from 'react';
 import StatussComponent from '../screens/posts/components'
-import {FlatList, TouchableOpacity, ScrollView} from 'react-native';
+import {View, Button, ScrollView} from 'react-native';
+import StatusList from '../screens/posts/feed'
 
-export default function FeedScreen({navigation}) {
+export function FeedScreen(props) {
+    var token = props.route.params.token
     return (
         <ScrollView>
-            <StatussComponent/>
+            <StatussComponent token={token} navigation={props.navigation}/>
         </ScrollView>
     )
 }
