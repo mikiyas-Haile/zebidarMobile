@@ -9,10 +9,12 @@ import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 import FavoriteBorderRoundedIcon from '@material-ui/icons/FavoriteBorderRounded';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import {faComment, faEdit, faTrashAlt} from '@fortawesome/free-regular-svg-icons';
+import {url} from '../urls'
+const host = url()
 function loadComments(callback,token,statusId) {
   const xhr = new XMLHttpRequest()
   const method = 'GET' // "POST"
-  const url = `https://zebidar-api-v2.herokuapp.com/api/status/${statusId}/comments`
+  const url = `${host}/api/status/${statusId}/comments`
   const responseType = "json"
   xhr.responseType = responseType
   xhr.open(method, url)
@@ -108,7 +110,8 @@ function StatusAuthorProfile(props){
   const {status} = props
   if (status.author.verified){
       return <span><strong style={{fontSize: '13px'}}> {status.author.first_name} {status.author.last_name}</strong>
-          <small style={{fontSize: '13px'}}>@{status.author.username} <span style={{fontSize:'10px',paddingTop:'4px', color: '#1d9bf0'}} className='material-icons-round'><VerifiedIcon style={{fontSize:'13px'}}/></span></small></span>
+          <small style={{fontSize: '13px'}}>@{status.author.username} <span style={{fontSize:'10px',paddingTop:'4px', color: '#1d9bf0'}} className='material-icons-round'>
+            <VerifiedIcon style={{fontSize:'13px'}}/></span></small></span>
   }else{
       return <span><strong style={{fontSize: '13px'}}> {status.author.first_name} {status.author.last_name}</strong>
           <small style={{fontSize: '13px'}}>@{status.author.username}</small></span>
@@ -129,7 +132,7 @@ function StatusImg(props){
   if (status.img){
       return <a href={`${status.img}`}>
                   <span style={{width:'100%', background:'#efeeee',borderRadius: '20px', display:'block'}} >
-                      <img src={`${status.img}`}></img>
+                      <img src={`${host}${status.img}`}></img>
                   </span>
               </a>
   }else{
@@ -141,7 +144,7 @@ function Status(props){
   const {status} = props
         return <div style={ {fontFamily: "Poppins-ExtraLight",borderRadius: '20px',border: '1px solid #fe2c55',margin: '5px',display:'flex',backgroundColor: 'white',} } className="status">
                 <div style={{padding: '5px',display: 'flex',justifyContent: 'spaceBetween'}} className="left-part">
-                        <img style={{ display: 'block',marginRight: '5px',borderRadius: '100%'}} src={`http://localhost:8000${status.author.pfp_url} `} width='40' height='40'/>
+                        <img style={{ display: 'block',marginRight: '5px',borderRadius: '100%'}} src={`${host}${status.author.pfp_url} `} width='40' height='40'/>
                 </div>
                 <div className='right-part'>
                     <div style={{paddingBottom: '5px',paddingTop: '5px'}} className="top-part">

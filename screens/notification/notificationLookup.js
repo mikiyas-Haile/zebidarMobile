@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
-
+import {url} from '../urls'
+const host = url()
 export function loadGroups(callback,token) {
     const xhr = new XMLHttpRequest()
     const method = 'GET' // "POST"
-    const url = "https://zebidar-api-v2.herokuapp.com/api/profile/my-notifications"
+    const url = `${host}/api/profile/my-notifications`
     const responseType = "json"
     xhr.responseType = responseType
     xhr.open(method, url)

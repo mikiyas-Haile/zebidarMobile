@@ -3,7 +3,6 @@ import MyProfile from '../screens/viewProfile/profile'
 import {FlatList, TouchableOpacity, ScrollView} from 'react-native';
 
 export function ProfileScreen(props) {
-    console.log(props)
     var token = props.route.params.token
     return (
         <ScrollView>

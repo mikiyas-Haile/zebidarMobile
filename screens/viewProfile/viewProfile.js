@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {FlatList, TouchableOpacity, ScrollView,View} from 'react-native';
 import VerifiedIcon from '@mui/icons-material/Verified';
-
+import {url} from '../urls'
+const host = url()
 
 function loadProfile(callback, user,token) {
+   console.log(user)
     const xhr = new XMLHttpRequest()
     const method = 'GET' // "POST"
-    const url = `https://zebidar-api-v2.herokuapp.com/users/api/${user}`
+    const url = `${host}/users/api/${user}`
     const responseType = "json"
     xhr.responseType = responseType
     xhr.open(method, url)
@@ -94,7 +96,7 @@ function UserPfp(props){
   const {UserProfile} = props
   return (
     <div style={{padding:'5px', width:'120px'}}>
-      <img style={{border:'1px solid #fe2c55', borderRadius: '100%'}} src={`http://localhost:8000${UserProfile.pfp_url} `} width='100' height='100'/>
+      <img style={{border:'1px solid #fe2c55', borderRadius: '100%'}} src={`${host}${UserProfile.pfp_url} `} width='100' height='100'/>
     </div>
   )
 }

@@ -1,13 +1,11 @@
 import {StatusList} from './feed';
 import {apiStatusCreate} from './apiLookup';
 import React, {useState, useEffect} from 'react';
+import {TextInput,Pressable, StyleSheet,Dimensions,View,Text,TouchableOpacity} from 'react-native'
+const {width, height} = Dimensions.get("screen")
 
 export default function StatussComponent(props){
   var token = props.token
-    const [open, setopen] = useState(false)
-    const newPost = (event) =>{
-        setopen(true)
-    }
     const [newStatuss, setNewStatuss] = useState([])
     const Ref = React.createRef()
     const handleBackendUpdate = (response, status) =>{
@@ -24,21 +22,44 @@ export default function StatussComponent(props){
         const newVal = Ref.current.value
         apiStatusCreate(newVal, handleBackendUpdate, token)
         Ref.current.value = ''
-        setopen(false)
       }
     
     return <div>
-        {/* <button
-        style={{height:'100px', backgroundColor: '#2c3e50'}}
-        onPress = {() => props.navigation.navigate('Create')}
-        >New Post</button> */}
-        
-        { open === true ? <form onSubmit={handleSubmit}>
-        <textarea required ref={Ref} className='form-control'>
-
-        </textarea>
+      {/* <form onSubmit={handleSubmit}>
+        <View>
+          <Text>What are you thinking?</Text>
+        <TextInput autoComplete  multiline style={styles.input} required ref={Ref}/>
+      </View>
         <button type="submit" className='btn'>Post</button>
-    </form>: <button onClick={newPost}>New Post</button> }
+    </form> */}
     <StatusList token={token} navigation={props.navigation} newStatuss={newStatuss}/>
     </div>
 }
+const styles= StyleSheet.create({
+    button: {
+    position:'absolute',
+    width:10,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: 13,
+      paddingHorizontal: 25,
+      borderRadius: 100,
+      elevation: 3,
+      backgroundColor: '#2c3e50',
+    },
+    text: {
+      fontSize: 16,
+      lineHeight: 21,
+      fontWeight: 'bold',
+      letterSpacing: 0.25,
+      color: 'white',
+    },
+  input:{
+    backgroundColor:"white",
+    borderWidth:1,
+    borderColor:'#2c3e50',
+    width: width/1.3,
+    padding:10,
+    margin:10,
+  }
+})

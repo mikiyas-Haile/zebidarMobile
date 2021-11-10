@@ -9,33 +9,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import {faComment, faEdit, faTrashAlt} from '@fortawesome/free-regular-svg-icons';
 import {faShareAlt} from '@fortawesome/free-solid-svg-icons';
 import VerifiedIcon from '@mui/icons-material/Verified';
-
+import {url} from '../urls'
+const host = url()
 export function StatusList(props) {
-  console.log(props.token)
   var token = props.token
-    const [statussInit, setStatussInit] = useState([])
     const [statuss, setstatus] = useState([])
-    const [statussDidSet, setstatussDidSet] = useState(false)
-    useEffect(()=>{
-      const final = [...props.newStatuss].concat(statussInit)
-      if (final.length !== statuss.length) {
-        setstatus(final)
-      }
-    }, [props.newStatuss, statuss, statussInit])
-
     useEffect(() => {
-      if (statussDidSet === false){
         const handleTweetListLookup = (response, status) => {
           if (status === 200){
-            setStatussInit(response)
-            setstatussDidSet(true)
+            setstatus(response)
           } else {
             alert("There was an error")
           }
         }
         apiStatusList(handleTweetListLookup,token)
-      }
-    }, [statussInit, statussDidSet, setstatussDidSet])
+    }, [])
     return (<div>
       {statuss.map((item, index)=>{
         return <View><Status token={token} navigation={props.navigation} status={item} key={`${index}`}/>
@@ -96,11 +84,11 @@ function ActionBtns(props){
 function StatusAuthorProfile(props){
     const {status} = props
     if (status.author.verified){
-        return <span><strong style={{fontSize: '13px'}}> {status.author.first_name} {status.author.last_name}</strong>
-            <small style={{fontSize: '13px'}}>@{status.author.username} <span style={{fontSize:'10px',paddingTop:'4px', color: '#1d9bf0'}} className='material-icons-round'><VerifiedIcon style={{fontSize:'13px'}}/></span></small></span>
+        return <span><strong style={{fontSize: 15}}> {status.author.first_name} {status.author.last_name}</strong>
+            <small style={{fontSize: 15}}>@{status.author.username} <span style={{fontSize:'10px',paddingTop:'4px', color: '#1d9bf0'}} className='material-icons-round'><VerifiedIcon style={{fontSize:15}}/></span></small></span>
     }else{
-        return <span><strong style={{fontSize: '13px'}}> {status.author.first_name} {status.author.last_name}</strong>
-            <small style={{fontSize: '13px'}}>@{status.author.username}</small></span>
+        return <span><strong style={{fontSize: 15}}> {status.author.first_name} {status.author.last_name}</strong>
+            <small style={{fontSize: 15}}>@{status.author.username}</small></span>
     }
 }
 function StatusAuthor(props){
@@ -118,7 +106,7 @@ function StatusImg(props){
     if (status.img){
         return <a href={`${status.img}`}>
                     <span style={{width:'100%', background:'#efeeee',borderRadius: '20px', display:'block'}} >
-                        <img src={`${status.img}`}></img>
+                        <img src={`${host}${status.img}`}></img>
                     </span>
                 </a>
     }else{
@@ -126,19 +114,27 @@ function StatusImg(props){
     }
 
 }
+function ParsedDate(props){
+  var {date} = props
+  var d = new Date(date)
+  var ddate = d.getFullYear()
+  var mmonth = d.getMonth()
+  return <span>{mmonth}/{ddate} </span>
+}
 function Status(props){
     const {status,token} = props
           return <div style={ {fontFamily: "Poppins-ExtraLight",borderRadius: '20px',border: '1px solid #fe2c55',margin: '5px',display:'flex',backgroundColor: 'white',} } className="status">
                   <div style={{padding: '5px',display: 'flex',justifyContent: 'spaceBetween'}} className="left-part">
-                  <span onClick = {() => props.navigation.navigate('viewProfile', {user:status.author.username})}><img style={{ display: 'block',marginRight: '5px',borderRadius: '100%'}} src={`http://localhost:8000${status.author.pfp_url} `} width='40' height='40'/></span>
+                  <span onClick = {() => props.navigation.navigate('viewProfile', {user:status.author.username})}>
+                      <img style={{ display: 'block',marginRight: '5px',borderRadius: '100%'}} src={`${host}${status.author.pfp_url} `} width='40' height='40'/></span>
                   </div>
                   <div className='right-part'>
                       <div style={{paddingBottom: '5px',paddingTop: '5px'}} className="top-part">
-                      <span onClick = {() => props.navigation.navigate('viewProfile', {user:status.author.username})}><StatusAuthor  status={status}/> <small> <GetFormattedDate  time={status.date_added}/></small></span>
+                      <span onClick = {() => props.navigation.navigate('viewProfile', {user:status.author.username})}><StatusAuthor  status={status}/> <small> <GetFormattedDate  time={status.date_added}/>  ● <ParsedDate date={status.date_added}/></small></span>
                       </div>
                       <div style={{paddingLeft: '5px',paddingBottom: '8px'}} className="middle-part">
                         <div style={{ fontSize: '16px'}} className='status-body'>
-                            <span onClick = {() => props.navigation.navigate('detail', {statusId:status.id})}> {status.body}</span>
+                            <span style={{ fontSize: 20}} onClick = {() => props.navigation.navigate('detail', {statusId:status.id})}> {status.body}</span>
                             <center><div id='img'>
                                 <StatusImg status={status}/>
                             </div></center>

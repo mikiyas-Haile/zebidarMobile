@@ -4,7 +4,6 @@ import React, {useState, useEffect} from 'react';
 
 export default function ExploreComponent(props){
     var token = props.token
-    console.log(token)
     const [open, setopen] = useState(false)
     const newPost = (event) =>{
         setopen(true)

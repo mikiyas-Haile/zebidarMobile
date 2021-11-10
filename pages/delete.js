@@ -2,13 +2,15 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {TextInput, Button} from 'react-native-paper';
+import {url} from '../urls'
+const host = url()
 export function StatusDelete(route , props) {
     var statusId = route.route.params.statusId
     var token = route.route.params.token
     const [state, setState] = useState({credentials : {body: ''}})   
     const Login = (event) => {
         event.preventDefault()
-        fetch(`http://localhost:8000/api/status/${statusId}/delete`,{
+        fetch(`${host}/api/status/${statusId}/delete`,{
         method: "DELETE", 
         headers: {'Content-Type': 'application/json',
         'Authorization': `Token ${token}`

@@ -7,7 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import {faComment, faEdit, faTrashAlt} from '@fortawesome/free-regular-svg-icons';
 import {GetFormattedDate} from '../getTime'
 import VerifiedIcon from '@mui/icons-material/Verified';
-
+import {url} from '../urls'
+const host = url()
 export function Notificationslist(props){
   var token = props.token
     const [allNotifications, setAllNotifications] = useState([])
@@ -46,7 +47,7 @@ function LikeNotification(props){
     return <div>
             <div style={{ display:'flex'}}>
               <ProfilePic notification={notification}/>
-              <StatusFromUserProfile notification={notification}/>  has liked your Post.
+              <StatusFromUserProfile notification={notification}/> <span> has liked your Post.</span>
             </div>
               <div>{NewDate}</div>
           </div>
@@ -56,7 +57,7 @@ function LikeNotification(props){
     return <div>
             <div style={{ display:'flex'}}>
               <ProfilePic notification={notification}/>
-              <StatusFromUserProfile notification={notification}/>  has liked your Comment.
+              <StatusFromUserProfile notification={notification}/> <span> has liked your Comment.</span>
             </div>
               <div>{NewDate}</div>
           </div>
@@ -66,7 +67,7 @@ function LikeNotification(props){
     return <div>
             <div style={{ display:'flex'}}>
               <ProfilePic notification={notification}/>
-              <StatusFromUserProfile notification={notification}/> has Commented on your Post.
+              <StatusFromUserProfile notification={notification}/>  <span> has Commented on your Post.</span>
             </div>
               <div>{NewDate}</div>
           </div>
@@ -76,7 +77,7 @@ function LikeNotification(props){
     return <div>
             <div style={{ display:'flex'}}>
               <ProfilePic notification={notification}/>
-              <StatusFromUserProfile notification={notification}/>  has Shared your Post.
+              <StatusFromUserProfile notification={notification}/> <span> has Shared your Post.</span>
             </div>
               <div>{NewDate}</div>
           </div>
@@ -86,7 +87,7 @@ function LikeNotification(props){
     return <div>
             <div style={{ display:'flex'}}>
               <ProfilePic notification={notification}/>
-              <StatusFromUserProfile notification={notification}/>  has started following you.
+              <StatusFromUserProfile notification={notification}/> <span> has started following you.</span>
             </div>
               <div>{NewDate}</div>
           </div>
@@ -96,7 +97,7 @@ function LikeNotification(props){
     return <div>
             <div style={{ display:'flex'}}>
               <ProfilePic notification={notification}/>
-              <StatusFromUserProfile notification={notification}/>  has Unfollowed you.
+              <StatusFromUserProfile notification={notification}/> <span> has Unfollowed you.</span>
             </div>
               <div>{NewDate}</div>
           </div>
@@ -116,6 +117,6 @@ function StatusFromUserProfile(props){
 }
 function ProfilePic(props){
   const {notification} = props
-  return <img style={{ display: 'block',marginRight: '5px',borderRadius: '100%'}} src={`http://localhost:8000${notification.from_user.pfp_url} `} width='40' height='40'/>
+  return <img style={{ display: 'block',marginRight: '5px',borderRadius: '100%'}} src={`${host}${notification.from_user.pfp_url} `} width='40' height='40'/>
 }
 export default Notificationslist

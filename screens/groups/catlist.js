@@ -5,10 +5,10 @@ import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 import FavoriteBorderRoundedIcon from '@material-ui/icons/FavoriteBorderRounded';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import {faComment, faEdit, faTrashAlt} from '@fortawesome/free-regular-svg-icons';
+import { Pressable } from 'react-native';
 
 export function Groupslist(props){
   var token = props.token
-  console.log(token)
     const [groups, setgroups] = useState([])
   
     useEffect(()=>{
@@ -23,13 +23,15 @@ export function Groupslist(props){
     }, [])
     return (<div>
       {groups.map((item, index)=>{
-        return <Group token={token} group={item} key={`${index}`}/>
+        return <Group token={token} navigation={props.navigation} group={item} key={`${index}`}/>
       })}</div>
     );
   }
 function ProfileImg(props){
   const {group} = props
-  return <div style={{display: 'block',width: '55px',marginRight: '5px', background: '#fe2c55',borderRadius: '10%', fontSize: '35px'}} className="group_name"><span style={{color: 'white',display: 'flex', justifyContent: 'center'}}>{group.title[0]}</span></div>
+  return <div style={{display: 'block',width: '55px',marginRight: '5px', background: '#fe2c55',borderRadius: '10%', fontSize: '35px'}} className="group_name">
+    <span style={{color: 'white',display: 'flex', justifyContent: 'center'}}>{group.title[0]}</span>
+    </div>
 }
 
 function ActionBtns(props){
@@ -66,22 +68,21 @@ function ActionBtns(props){
     }
 }
 
-
-
-
 function Group(props){
-  const {group,token} = props
+  const {group,token, navigation} = props
   return <div style={{padding: '3px'}} className='padding'>
     <div style={{display: 'flex', border: '1px solid #fe2c55',backgroundColor: 'white', padding: '10px'}} className='cats'>
       <div className="right-part">
-        <div className='middle-part' style={{display:'flex',paddingTop: '5px',paddingBottom: '10px'}}>
-          <ProfileImg group={group}/>
-          <strong style={{fontSize:'30px'}}>{ group.title }</strong>
-        </div>
+        <Pressable onPress={() => props.navigation.navigate('viewgroup', {group: group})}>
+          <div className='middle-part' style={{display:'flex',paddingTop: '5px',paddingBottom: '10px'}}>
+            <ProfileImg group={group}/>
+            <strong style={{fontSize:'30px'}}>{ group.title }</strong>
+          </div>
+        </Pressable>
         <div >{group.about}</div>
         <ActionBtns token={token} group={group} action={{type:'like'}}/>
         <span style={{fontSize:'30px', paddingRight:'10px'}}>{ group.posts }</span>
-        <FontAwesomeIcon onClick = {() => props.navigation.navigate('comment', {statusId:status.id})} className='hover:text-red-500' style={{color:'#2c3e50'}} size={ 20 } icon={faComment} />
+        <FontAwesomeIcon onClick = {() => props.navigation.navigate('comment')} className='hover:text-red-500' style={{color:'#2c3e50'}} size={ 20 } icon={faComment} />
         {/* <span style={{fontSize:'30px', float:'right'}}>view</span> */}
       </div>
     </div>

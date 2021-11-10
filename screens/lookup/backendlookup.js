@@ -1,3 +1,6 @@
+import {url} from '../urls'
+const host = url()
+
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -15,25 +18,27 @@ function getCookie(name) {
   }
   
 export function lookup(method, endpoint, callback, token,data) {
-  
-  console.log(token)
   let jsonData;
   if (data){
     jsonData = JSON.stringify(data)
   }
   const xhr = new XMLHttpRequest()
-  const url = `https://zebidar-api-v2.herokuapp.com/api${endpoint}`
+  const url = `${host}${endpoint}`
   xhr.responseType = "json"
   const csrftoken = getCookie('csrftoken');
   xhr.open(method, url)
   xhr.setRequestHeader("Content-Type", "application/json")
   xhr.setRequestHeader('Authorization', `Token ${token}`)
   xhr.onload = function() {
+    if (xhr.status === 403){
+      alert("You are not logged in. Please Login to Zebidar.")
+      window.location.reload()
+    }else if (xhr.status === 404){
+      alert("Page wasn't found.")
+    }else if(xhr.status === 500){
+      alert("There is an internal server error. Please try again later.")
+    }
     callback(xhr.response, xhr.status)
-  }
-  xhr.onerror = function (e) {
-    console.log(e)
-    callback({"message": "The request was an error"}, 400)
   }
   xhr.send(jsonData)
 }

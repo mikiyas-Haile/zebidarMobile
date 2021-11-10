@@ -9,11 +9,12 @@ import {faShareAlt} from '@fortawesome/free-solid-svg-icons';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import {loadStatuss} from '../screens/posts/loadStatus'
 import {apiStatusAction} from '../screens/posts/apiLookup'
-
+import {url} from '../urls'
+const host = url()
 function loadStatussReply(callback,token,statusId) {
   const xhr = new XMLHttpRequest()
   const method = 'GET' // "POST"
-  const url = `http://localhost:8000/api/status/${statusId}`
+  const url = `${host}/api/status/${statusId}`
   const responseType = "json"
   xhr.responseType = responseType
   xhr.open(method, url)
@@ -71,7 +72,7 @@ export function StatusShare(props){
   return (<div>
             <div style={ {fontFamily: "Poppins-ExtraLight",borderRadius: '20px',border: '1px solid #fe2c55',margin: '5px',display:'flex',backgroundColor: 'white',} } className='status'>
           <div style={{padding: '5px',display: 'flex',justifyContent: 'spaceBetween'}} className="left-part">
-            <img style={{ display: 'block',marginRight: '5px',borderRadius: '100%'}} className='rounded-circle' src={`http://localhost:8000${author.pfp_url} `} width='40' height='40'/>
+            <img style={{ display: 'block',marginRight: '5px',borderRadius: '100%'}} className='rounded-circle' src={`${host}${author.pfp_url} `} width='40' height='40'/>
           </div>
           <div className="right-part">
             <div style={{paddingBottom: '5px',paddingTop: '5px'}} className="top-part">

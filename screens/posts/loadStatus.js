@@ -1,8 +1,9 @@
-
+import {url} from '../urls'
+const host = url()
 export default function loadStatuss(callback) {
     const xhr = new XMLHttpRequest()
     const method = 'GET' // "POST"
-    const url = "https://zebidar-api-v2.herokuapp.com/api/feed"
+    const url = `${host}/api/feed`
     
     const responseType = "json"
     xhr.responseType = responseType

@@ -7,12 +7,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import {faComment, faEdit, faTrashAlt} from '@fortawesome/free-regular-svg-icons';
 import {faShareAlt} from '@fortawesome/free-solid-svg-icons';
 import VerifiedIcon from '@mui/icons-material/Verified';
-
+import {GetFormattedDate} from '../getTime';
+import {url} from '../urls'
+const host = url()
 import {apiStatusAction} from '../posts/apiLookup'
 function loadStatuss(callback,token,statusId) {
     const xhr = new XMLHttpRequest()
     const method = 'GET' // "POST"
-    const url = `https://zebidar-api-v2.herokuapp.com/api/status/${statusId}`
+    const url = `${host}/api/status/${statusId}`
     const responseType = "json"
     xhr.responseType = responseType
     xhr.open(method, url)
@@ -25,6 +27,13 @@ function loadStatuss(callback,token,statusId) {
       callback({"message": "The request was an error"}, 400)
     }
     xhr.send()
+  }
+  function ParsedDate(props){
+    var {date} = props
+    var d = new Date(date)
+    var ddate = d.getFullYear()
+    var mmonth = d.getMonth()
+    return <span>{mmonth}/{ddate} </span>
   }
 export default function Detail(props){
   var statusId = props.statusId
@@ -54,11 +63,12 @@ export default function Detail(props){
   }, [])
   return <div style={ {fontFamily: "Poppins-ExtraLight",borderRadius: '20px',border: '1px solid #fe2c55',margin: '5px',display:'flex',backgroundColor: 'white',} } className='status'>
           <div style={{padding: '5px',display: 'flex',justifyContent: 'spaceBetween'}} className="left-part">
-            <img style={{ display: 'block',marginRight: '5px',borderRadius: '100%'}} className='rounded-circle' src={`http://localhost:8000${author.pfp_url} `} width='40' height='40'/>
+            <img style={{ display: 'block',marginRight: '5px',borderRadius: '100%'}} className='rounded-circle' src={`${host}${author.pfp_url} `} width='40' height='40'/>
           </div>
           <div className="right-part">
             <div style={{paddingBottom: '5px',paddingTop: '5px'}} className="top-part">
               <StatusAuthor parentAuthor={parentAuthor} author={author} status={status}/>
+              <small> <GetFormattedDate  time={status.date_added}/>  ● <ParsedDate date={status.date_added}/></small>
             </div>
             <div style={{paddingLeft: '5px',paddingBottom: '8px'}} className="middle-part">
               <div style={{ fontSize: '16px'}} className='status-body'>
@@ -128,7 +138,7 @@ function StatusImg(props){
   const {status} = props
   if (status.img){
                   <span style={{width:'100%', background:'#efeeee',borderRadius: '20px', display:'block'}} >
-                      <img src={`${status.img}`}></img>
+                      <img src={`${host}${status.img}`}></img>
                   </span>
   }else{
       return ''

@@ -4,9 +4,10 @@ import {FlatList, TouchableOpacity, ScrollView} from 'react-native';
 
 export function GroupsScreen(props) {
     var token = props.route.params.token
+
     return (
         <ScrollView>
-            <Groupslist token={token}/>
+            <Groupslist navigation={props.navigation} token={token}/>
         </ScrollView>
     )
 }

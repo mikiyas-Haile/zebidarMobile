@@ -7,7 +7,7 @@ export function ProfileScreen(props) {
     var token = props.route.params.token
     return (
         <ScrollView>
-            <ViewProfile token={token} navigation={props.navigation}/>
+            <ViewProfile user={user} token={token} navigation={props.navigation}/>
         </ScrollView> 
     )
 }
