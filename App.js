@@ -70,14 +70,14 @@ export default function App(props) {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="home">
           <Stack.Screen style={{fontFamily: "Poppins-Bold"}} initialParams={{'token':tok}} options={homeStyles} name="home" component={Home} />
-          <Stack.Screen initialParams={{'token':tok}} options={navbarStyles} name="reply" component={StatusShare}/>
+          {/* <Stack.Screen initialParams={{'token':tok}} options={navbarStyles} name="reply" component={StatusShare}/>
           <Stack.Screen initialParams={{'token':tok}} options={CreatePostStyles} name="createPost" component={CreatePostScreen}/>
           <Stack.Screen initialParams={{'token':tok}} options={profileStyles} name="viewProfile" component={ProfileScreen}/>
           <Stack.Screen initialParams={{'token':tok}} options={navbarStyles} name="update" component={StatusUpdate}/>
           <Stack.Screen initialParams={{'token':tok}} options={navbarStyles} name="delete" component={StatusDelete}/>
           <Stack.Screen initialParams={{'token':tok}} options={navbarStyles} name="detail" component={StatusDetail}/>
           <Stack.Screen initialParams={{'token':tok}} options={navbarStyles} name="viewgroup" component={GroupDetailScreen}/>
-          <Stack.Screen initialParams={{'token':tok}} options={navbarStyles} name="comment" component={StatusComment}/>
+          <Stack.Screen initialParams={{'token':tok}} options={navbarStyles} name="comment" component={StatusComment}/> */}
         </Stack.Navigator>
       </NavigationContainer>
   );

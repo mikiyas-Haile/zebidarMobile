@@ -27,7 +27,7 @@ export default function ExploreComponent(props){
         setopen(false)
       }
     
-    return <div>
+    return <View>
         {/* <button
         style={{height:'100px', backgroundColor: '#2c3e50'}}
         onPress = {() => props.navigation.navigate('Create')}
@@ -40,5 +40,5 @@ export default function ExploreComponent(props){
         <button type="submit" className='btn'>Post</button>
     </form>: <button onClick={newPost}>New Post</button> } */}
     <StatusList token={token} navigation={props.navigation} newStatuss={newStatuss}/>
-    </div>
+    </View>
 }

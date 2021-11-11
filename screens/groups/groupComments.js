@@ -37,47 +37,47 @@ export function Commentslist(props){
 
 
 
-    return (<div>
-        <center><span>Comments</span></center>
-        <hr/><br/>
+    return (<View>
+        {/* <center><Text>Comments</Text></center>
+        <hr/><br/> */}
         {Comments.map((item, index)=>{
             return <><Post token={token} navigation={props.navigation} post={item} key={`${item.id}`}/></>
-          })}</div>
+          })}</View>
     );
   }
 
 function Post(props){
     const {post,token} = props
     return <>
-        <div style={ {fontFamily: "Poppins-ExtraLight",borderRadius: '20px',border: '1px solid #fe2c55',margin: '5px',display:'flex',backgroundColor: 'white',} } className="post">
-                  <div style={{padding: '10px',display: 'flex',justifyContent: 'spaceBetween'}} className="left-part">
-                  <span onClick = {() => props.navigation.navigate('viewProfile', {user:post.author.username})}>
-                    <img style={{ display: 'block',marginRight: '5px',borderRadius: '100%'}} src={`${host}${post.author.pfp_url} `} width='40' height='40'/></span>
-                  </div>
-                  <div className='right-part'>
-                      <div style={{paddingBottom: '5px',paddingTop: '5px'}} className="top-part">
-                        <span onClick = {() => props.navigation.navigate('viewProfile', {user:post.author.username})}>
-                          <PostAuthor  post={post}/>  </span> 
-                          <small>
-                           <GetFormattedDate  time={post.date_added}/>  ● <ParsedDate date={post.date_added}/></small>
-                      </div>
-                      <div style={{paddingLeft: '5px',paddingBottom: '8px'}} className="middle-part">
-                        <div style={{ fontSize: '16px'}} className='post-body'>
-                            <span onClick = {() => props.navigation.navigate('detail', {postId:post.id})} style={{fontSize:20, fontFamily: "Poppins-Bold"}}> {post.body}</span>
-                            <center><div id='img'>
+        <View style={ {fontFamily: "Poppins-ExtraLight",borderRadius: '20px',border: '1px solid #fe2c55',margin: '5px',display:'flex',backgroundColor: 'white',} } className="post">
+                  <View style={{padding: '10px',display: 'flex',justifyContent: 'spaceBetween'}} className="left-part">
+                  <Text onClick = {() => props.navigation.navigate('viewProfile', {user:post.author.username})}>
+                    {/* <img style={{ display: 'block',marginRight: '5px',borderRadius: '100%'}} src={`${host}${post.author.pfp_url} `} width='40' height='40'/> */}</Text>
+                  </View>
+                  <View className='right-part'>
+                      <View style={{paddingBottom: '5px',paddingTop: '5px'}} className="top-part">
+                        <Text onClick = {() => props.navigation.navigate('viewProfile', {user:post.author.username})}>
+                          <PostAuthor  post={post}/>  </Text> 
+                          <Text>
+                           <GetFormattedDate  time={post.date_added}/>  ● <ParsedDate date={post.date_added}/></Text>
+                      </View>
+                      <View style={{paddingLeft: '5px',paddingBottom: '8px'}} className="middle-part">
+                        <View style={{ fontSize: '16px'}} className='post-body'>
+                            <Text onClick = {() => props.navigation.navigate('detail', {postId:post.id})} style={{fontSize:20, fontFamily: "Poppins-Bold"}}> {post.body}</Text>
+                           <View id='img'>
                                 <PostImg post={post}/>
-                            </div></center>
-                        </div>
-                      </div>
-                      <div style={{width:'250px',display: 'flex',justifyContent: 'space-between', color:'#2c3e50'}} className="last-part">
+                            </View>
+                        </View>
+                      </View>
+                      <View style={{width:'250px',display: 'flex',justifyContent: 'space-between', color:'#2c3e50'}} className="last-part">
                         <ActionBtns token={token} post={post} action={{type:'like'}}/>
                         <ActionBtns navigation={props.navigation} post={post} action={{type:'comment'}}/>
                         <ActionBtns navigation={props.navigation} post={post} action={{type:'reply'}}/>
                         <ActionBtns navigation={props.navigation} post={post} action={{type:'edit'}}/>
                         <ActionBtns navigation={props.navigation} post={post} post={post} action={{type:'delete'}}/>
-                      </div>
-                  </div>
-              </div>
+                      </View>
+                  </View>
+              </View>
         </>
 }
 
@@ -107,19 +107,19 @@ function ActionBtns(props){
     }
     if (action.type === 'like'){
         if (hasLiked === true){
-            return <div><div><span onClick={handleClick} style={{fontSize: '20px'}} className='material-icons-round'><FavoriteRoundedIcon/></span></div></div>
+            return <View><View><Text onClick={handleClick} style={{fontSize: '20px'}} className='material-icons-round'><FavoriteRoundedIcon/></Text></View></View>
         }else{
-        return <div><div><span onClick={handleClick} style={{fontSize: '20px'}} className='material-icons-outlined'><FavoriteBorderRoundedIcon/></span></div></div>
+        return <View><View><Text onClick={handleClick} style={{fontSize: '20px'}} className='material-icons-outlined'><FavoriteBorderRoundedIcon/></Text></View></View>
     }
     }else if (action.type === 'comment'){
-        return <div><div><FontAwesomeIcon onClick = {() => props.navigation.navigate('comment', {postId:post.id})} className='hover:text-red-500' style={{color:'#2c3e50'}} size={ 20 } icon={faComment} /></div></div>
+        return <View><View><FontAwesomeIcon onClick = {() => props.navigation.navigate('comment', {postId:post.id})} className='hover:text-red-500' style={{color:'#2c3e50'}} size={ 20 } icon={faComment} /></View></View>
     }else if (action.type === 'reply'){
-        return <div><FontAwesomeIcon onClick = {() => props.navigation.navigate('reply', {postId:post.id})} style={{color:'#2c3e50'}} size={ 20 } icon={faShareAlt} /></div>
+        return <View><FontAwesomeIcon onClick = {() => props.navigation.navigate('reply', {postId:post.id})} style={{color:'#2c3e50'}} size={ 20 } icon={faShareAlt} /></View>
     }if (post.is_me){
         if (action.type === 'edit'){
-            return <div><FontAwesomeIcon onClick = {() => props.navigation.navigate('update', {postId:post.id})} style={{color:'#2c3e50'}} size={ 20 } icon={faEdit} /></div>
+            return <View><FontAwesomeIcon onClick = {() => props.navigation.navigate('update', {postId:post.id})} style={{color:'#2c3e50'}} size={ 20 } icon={faEdit} /></View>
         }else if (action.type === 'delete'){
-            return <div><FontAwesomeIcon onClick = {() => props.navigation.navigate('delete', {postId:post.id})} style={{color:'#2c3e50'}} size={ 20 } icon={faTrashAlt} /></div>
+            return <View><FontAwesomeIcon onClick = {() => props.navigation.navigate('delete', {postId:post.id})} style={{color:'#2c3e50'}} size={ 20 } icon={faTrashAlt} /></View>
         }else{
             return ''
         }
@@ -132,18 +132,18 @@ function ActionBtns(props){
 function PostAuthorProfile(props){
     const {post} = props
     if (post.author.verified){
-        return <span><strong style={{fontSize: 15}}> {post.author.first_name} {post.author.last_name}</strong>
-            <small style={{fontSize: 15}}>@{post.author.username} <span style={{fontSize:'10px',paddingTop:'4px', color: '#1d9bf0'}} className='material-icons-round'><VerifiedIcon style={{fontSize:15}}/></span></small></span>
+        return <Text><strong style={{fontSize: 15}}> {post.author.first_name} {post.author.last_name}</strong>
+            <Text style={{fontSize: 15}}>@{post.author.username} <Text style={{fontSize:'10px',paddingTop:'4px', color: '#1d9bf0'}} className='material-icons-round'><VerifiedIcon style={{fontSize:15}}/></Text></Text></Text>
     }else{
-        return <span><strong style={{fontSize: 15}}> {post.author.first_name} {post.author.last_name}</strong>
-            <small style={{fontSize: 15}}>@{post.author.username}</small></span>
+        return <Text><strong style={{fontSize: 15}}> {post.author.first_name} {post.author.last_name}</strong>
+            <Text style={{fontSize: 15}}>@{post.author.username}</Text></Text>
     }
 }
 function PostAuthor(props){
     const {post} = props
     if (post.is_reply){
         const item = "   >   "
-        return <span> <PostAuthorProfile post={post}/> {item} <PostAuthorProfile post={post.parent}/></span>
+        return <Text> <PostAuthorProfile post={post}/> {item} <PostAuthorProfile post={post.parent}/></Text>
     }else{
         return <PostAuthorProfile post={post}/>
 
@@ -152,9 +152,9 @@ function PostAuthor(props){
 function PostImg(props){
     const {post} = props
     if (post.img){
-                    <span style={{width:'100%', background:'#efeeee',borderRadius: '20px', display:'block'}} >
-                        <img src={`${host}${post.img}`}></img>
-                    </span>
+                    <Text style={{width:'100%', background:'#efeeee',borderRadius: '20px', display:'block'}} >
+                        {/* <img src={`${host}${post.img}`}></img> */}
+                    </Text>
     }else{
         return ''
     }
@@ -165,5 +165,5 @@ function ParsedDate(props){
   var d = new Date(date)
   var ddate = d.getFullYear()
   var mmonth = d.getMonth()
-  return <span>{mmonth}/{ddate} </span>
+  return <Text>{mmonth}/{ddate} </Text>
 }

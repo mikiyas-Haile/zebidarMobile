@@ -92,9 +92,9 @@ export function Home(props) {
                           iconName = 'notifications'
                       return <Ionicons name={iconName} size={40} color={color}/>
 
-                      }else if (rn === profile.username+"'s "+ profileName){
-                          return <img style={{ display: 'block',marginRight: '5px',borderRadius: '100%'}} src={`${host}${profile.pfp_url} `} width='40' height='40'/>
-                      }
+                      }//else if (rn === profile.username+"'s "+ profileName){
+                      //     return <img style={{ display: 'block',marginRight: '5px',borderRadius: '100%'}} src={`${host}${profile.pfp_url} `} width='40' height='40'/>
+                      // }
                   }
               })}
               tabBarOptions={{
@@ -105,12 +105,12 @@ export function Home(props) {
               }}
               >
                   <Tab.Screen  options={navbarStyles} initialParams={{'token':token}} name={homeName} component={FeedScreen} />
-                  <Tab.Screen options={navbarStyles} initialParams={{'token':token}} name={exploreName} component={ExploreScreen} />
+                  {/* <Tab.Screen options={navbarStyles} initialParams={{'token':token}} name={exploreName} component={ExploreScreen} />
                   <Tab.Screen options={navbarStyles} initialParams={{'token':token}} name={groupsName} component={GroupsScreen} />
                   <Tab.Screen options={navbarStyles} initialParams={{'token':token}} name={notificationName} component={NotificationScreen} />
-                  <Tab.Screen options={navbarStyles} initialParams={{'token':token}} name={profile.username+"'s "+ profileName} component={ProfileScreen} />
+                  <Tab.Screen options={navbarStyles} initialParams={{'token':token}} name={profile.username+"'s "+ profileName} component={ProfileScreen} /> */}
               </Tab.Navigator>
-              <img style={{position:'absolute',top:'0',right:'0',borderRadius: '100%'}} src={require('./assets/icon.png')} width='40' height='40'/>
+              {/* <img style={{position:'absolute',top:'0',right:'0',borderRadius: '100%'}} src={require('./assets/icon.png')} width='40' height='40'/> */}
 
               <Pressable style={styles.button}>
                 <TouchableOpacity>

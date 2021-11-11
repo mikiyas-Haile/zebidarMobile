@@ -8,8 +8,8 @@ export function FeedScreen(props) {
     return (
         <ScrollView>
             <StatussComponent token={token} navigation={props.navigation}/>
-            <center><div style={{fontSize:20,height:100}}>You have seen all posts from your Followings</div>
-            <div><Text style={{fontSize:20,margin:30, color:"#fe2c55"}} onClick = {() => props.navigation.navigate('Explore')}> Explore more </Text></div></center>
+            <View style={{fontSize:20,height:100}}>You have seen all posts from your Followings</View>
+            <View><Text style={{fontSize:20,margin:30, color:"#fe2c55"}} onClick = {() => props.navigation.navigate('Explore')}> Explore more </Text></View>
         </ScrollView>
     )
 }

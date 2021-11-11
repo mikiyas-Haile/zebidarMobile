@@ -5,7 +5,7 @@ import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 import FavoriteBorderRoundedIcon from '@material-ui/icons/FavoriteBorderRounded';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import {faComment, faEdit, faTrashAlt} from '@fortawesome/free-regular-svg-icons';
-import { Pressable } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 
 export function Groupslist(props){
   var token = props.token
@@ -21,17 +21,17 @@ export function Groupslist(props){
       }
       loadGroups(myCallback,token)
     }, [])
-    return (<div>
+    return (<View>
       {groups.map((item, index)=>{
         return <Group token={token} navigation={props.navigation} group={item} key={`${index}`}/>
-      })}</div>
+      })}</View>
     );
   }
 function ProfileImg(props){
   const {group} = props
-  return <div style={{display: 'block',width: '55px',marginRight: '5px', background: '#fe2c55',borderRadius: '10%', fontSize: '35px'}} className="group_name">
-    <span style={{color: 'white',display: 'flex', justifyContent: 'center'}}>{group.title[0]}</span>
-    </div>
+  return <View style={{display: 'block',width: '55px',marginRight: '5px', background: '#fe2c55',borderRadius: '10%', fontSize: '35px'}} className="group_name">
+    <Text style={{color: 'white',display: 'flex', justifyContent: 'center'}}>{group.title[0]}</Text>
+    </View>
 }
 
 function ActionBtns(props){
@@ -59,9 +59,9 @@ function ActionBtns(props){
   }
     if (action.type === 'like'){
       if (hasLiked === true){
-        return <span><span onClick={handleClick} style={{fontSize:'30px', paddingRight:'10px'}}>{likes }</span><span onClick={handleClick} style={{color: '#2c3e50',paddingRight:'100px'}} className="material-icons"><FavoriteRoundedIcon size={30}/></span></span>
+        return <Text><Text onClick={handleClick} style={{fontSize:'30px', paddingRight:'10px'}}>{likes }</Text><Text onClick={handleClick} style={{color: '#2c3e50',paddingRight:'100px'}} className="material-icons"><FavoriteRoundedIcon size={30}/></Text></Text>
       }else{
-        return <span><span onClick={handleClick} style={{fontSize:'30px', paddingRight:'10px'}}>{likes }</span><span onClick={handleClick} style={{color: '#2c3e50',paddingRight:'100px'}} className="material-icons-outlined"><FavoriteBorderRoundedIcon size={30}/></span></span>
+        return <Text><Text onClick={handleClick} style={{fontSize:'30px', paddingRight:'10px'}}>{likes }</Text><Text onClick={handleClick} style={{color: '#2c3e50',paddingRight:'100px'}} className="material-icons-outlined"><FavoriteBorderRoundedIcon size={30}/></Text></Text>
       }
     }else{
         return ''
@@ -70,23 +70,23 @@ function ActionBtns(props){
 
 function Group(props){
   const {group,token, navigation} = props
-  return <div style={{padding: '3px'}} className='padding'>
-    <div style={{display: 'flex', border: '1px solid #fe2c55',backgroundColor: 'white', padding: '10px'}} className='cats'>
-      <div className="right-part">
+  return <View style={{padding: '3px'}} className='padding'>
+    <View style={{display: 'flex', border: '1px solid #fe2c55',backgroundColor: 'white', padding: '10px'}} className='cats'>
+      <View className="right-part">
         <Pressable onPress={() => props.navigation.navigate('viewgroup', {group: group})}>
-          <div className='middle-part' style={{display:'flex',paddingTop: '5px',paddingBottom: '10px'}}>
+          <View className='middle-part' style={{display:'flex',paddingTop: '5px',paddingBottom: '10px'}}>
             <ProfileImg group={group}/>
             <strong style={{fontSize:'30px'}}>{ group.title }</strong>
-          </div>
+          </View>
         </Pressable>
-        <div >{group.about}</div>
+        <View >{group.about}</View>
         <ActionBtns token={token} group={group} action={{type:'like'}}/>
-        <span style={{fontSize:'30px', paddingRight:'10px'}}>{ group.posts }</span>
+        <Text style={{fontSize:'30px', paddingRight:'10px'}}>{ group.posts }</Text>
         <FontAwesomeIcon onClick = {() => props.navigation.navigate('comment')} className='hover:text-red-500' style={{color:'#2c3e50'}} size={ 20 } icon={faComment} />
-        {/* <span style={{fontSize:'30px', float:'right'}}>view</span> */}
-      </div>
-    </div>
-    </div>
+        {/* <Text style={{fontSize:'30px', float:'right'}}>view</Text> */}
+      </View>
+    </View>
+    </View>
 }
 
 export default Groupslist

@@ -69,33 +69,33 @@ export function StatusShare(props){
     apiStatusAction(statusId, 'reply',token, myCallback)
     
   }
-  return (<div>
-            <div style={ {fontFamily: "Poppins-ExtraLight",borderRadius: '20px',border: '1px solid #fe2c55',margin: '5px',display:'flex',backgroundColor: 'white',} } className='status'>
-          <div style={{padding: '5px',display: 'flex',justifyContent: 'spaceBetween'}} className="left-part">
+  return (<View>
+            <View style={ {fontFamily: "Poppins-ExtraLight",borderRadius: '20px',border: '1px solid #fe2c55',margin: '5px',display:'flex',backgroundColor: 'white',} } className='status'>
+          <View style={{padding: '5px',display: 'flex',justifyContent: 'spaceBetween'}} className="left-part">
             <img style={{ display: 'block',marginRight: '5px',borderRadius: '100%'}} className='rounded-circle' src={`${host}${author.pfp_url} `} width='40' height='40'/>
-          </div>
-          <div className="right-part">
-            <div style={{paddingBottom: '5px',paddingTop: '5px'}} className="top-part">
+          </View>
+          <View className="right-part">
+            <View style={{paddingBottom: '5px',paddingTop: '5px'}} className="top-part">
               <StatusAuthor parentAuthor={parentAuthor} author={author} status={status}/>
-            </div>
-            <div style={{paddingLeft: '5px',paddingBottom: '8px'}} className="middle-part">
-              <div style={{ fontSize: '16px'}} className='status-body'>
+            </View>
+            <View style={{paddingLeft: '5px',paddingBottom: '8px'}} className="middle-part">
+              <View style={{ fontSize: '16px'}} className='status-body'>
                 {status.body}
-                <center><div id='img'>
+             <View id='img'>
                     <StatusImg status={status}/>
-                </div></center>
-              </div>
-            </div>
-            <div style={{width:'250px',display: 'flex',justifyContent: 'space-between', color:'#2c3e50'}} className='last-part'>
+                </View>
+              </View>
+            </View>
+            <View style={{width:'250px',display: 'flex',justifyContent: 'space-between', color:'#2c3e50'}} className='last-part'>
               <ActionBtns token={token} status={status} action={{type:'like'}}/>
               <ActionBtns navigation={props.navigation} status={status} action={{type:'comment'}}/>
-            </div>
-          </div>
-            </div>
+            </View>
+          </View>
+            </View>
             <Pressable style={styles.button} onPress={handleClick}>
               <Text style={styles.text}>Share to feed</Text>
           </Pressable>
-        </div>)
+        </View>)
 }
 function ActionBtns(props){
   const {status,action, didPerformAction,token} = props 
@@ -123,12 +123,12 @@ function ActionBtns(props){
   }
   if (action.type === 'like'){
       if (hasLiked === true){
-          return <div><div><span onClick={handleClick} style={{fontSize: '20px'}} className='material-icons-round'><FavoriteRoundedIcon/></span></div></div>
+          return <View><View><Pressable onClick={handleClick} style={{fontSize: '20px'}} className='material-icons-round'><FavoriteRoundedIcon/></Pressable></View></View>
       }else{
-      return <div><div><span onClick={handleClick} style={{fontSize: '20px'}} className='material-icons-outlined'><FavoriteBorderRoundedIcon/></span></div></div>
+      return <View><View><Pressable onClick={handleClick} style={{fontSize: '20px'}} className='material-icons-outlined'><FavoriteBorderRoundedIcon/></Pressable></View></View>
   }
   }else if (action.type === 'comment'){
-      return <div><div><FontAwesomeIcon onClick = {() => props.navigation.navigate('comment', {statusId:status.id})} className='hover:text-red-500' style={{color:'#2c3e50'}} size={ 20 } icon={faComment} /></div></div>
+      return <View><View><FontAwesomeIcon onClick = {() => props.navigation.navigate('comment', {statusId:status.id})} className='hover:text-red-500' style={{color:'#2c3e50'}} size={ 20 } icon={faComment} /></View></View>
   }
   if (status.is_me){
       if (action.type === 'edit'){
@@ -145,9 +145,9 @@ function ActionBtns(props){
 function StatusImg(props){
   const {status} = props
   if (status.img){
-                  <span style={{width:'100%', background:'#efeeee',borderRadius: '20px', display:'block'}} >
+                  <Pressable style={{width:'100%', background:'#efeeee',borderRadius: '20px', display:'block'}} >
                       <img src={`${status.img}`}></img>
-                  </span>
+                  </Pressable>
   }else{
       return ''
   }
@@ -157,7 +157,7 @@ function StatusAuthor(props){
   const {status, author, parentAuthor} = props
   if (status.is_reply){
       const item = "   >   "
-      return <span> <StatusAuthorProfile status={status} author={author}/> {item} <StatusAuthorProfile status={status} author={parentAuthor}/></span>
+      return <Pressable> <StatusAuthorProfile status={status} author={author}/> {item} <StatusAuthorProfile status={status} author={parentAuthor}/></Pressable>
   }else{
       return <StatusAuthorProfile status={status} author={author}/>
 
@@ -167,11 +167,11 @@ function StatusAuthorProfile(props){
   const {author} = props
 
   if (author.verified){
-      return <span><strong> {author.first_name} {author.last_name}</strong>
-          <small>@{author.username} <span style={{fontSize:'10px',paddingTop:'4px', color: '#1d9bf0'}} className='material-icons-round'><VerifiedIcon style={{fontSize:'13px'}}/></span></small></span>
+      return <Pressable><strong> {author.first_name} {author.last_name}</strong>
+          <small>@{author.username} <Pressable style={{fontSize:'10px',paddingTop:'4px', color: '#1d9bf0'}} className='material-icons-round'><VerifiedIcon style={{fontSize:'13px'}}/></Pressable></small></Pressable>
   }else{
-      return <span><strong> {author.first_name} {author.last_name}</strong>
-          <small>@{author.username}</small></span>
+      return <Pressable><strong> {author.first_name} {author.last_name}</strong>
+          <small>@{author.username}</small></Pressable>
   }
 }
 const styles = StyleSheet.create({

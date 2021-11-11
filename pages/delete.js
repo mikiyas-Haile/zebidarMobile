@@ -29,9 +29,9 @@ export function StatusDelete(route , props) {
       }
     return (
         <View>
-            <h2>Are you sure you want to Delete this post?</h2>
+            <Text>Are you sure you want to Delete this post?</Text>
             <br/>
-            <button  onClick={Login}>Delete</button>
+            <Button  onPress={Login}>Delete</Button>
         </View>
     )
 }
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     inputStyle:{
         backgroundColor:"white",
         borderColor:"#2c3e50",
-        border: 'none',
         padding: '0',
         margin: '20px',
         color: '#2c3e50'

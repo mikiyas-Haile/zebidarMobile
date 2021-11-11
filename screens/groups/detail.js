@@ -18,7 +18,7 @@ import {apiStatusAction} from '../posts/apiLookup'
     var d = new Date(date)
     var ddate = d.getFullYear()
     var mmonth = d.getMonth()
-    return <span>{mmonth}/{ddate} </span>
+    return <Text>{mmonth}/{ddate} </Text>
   }
 export function GroupDetail(props){
   var group = props.group
@@ -30,9 +30,9 @@ export function GroupDetail(props){
 }
 function ProfileImg(props){
   const {group} = props
-  return <div style={{display: 'block',width: '55px',marginRight: '5px', background: '#fe2c55',borderRadius: '10%', fontSize: '35px'}} className="group_name">
-    <span style={{color: 'white',display: 'flex', justifyContent: 'center'}}>{group.title[0]}</span>
-    </div>
+  return <View style={{display: 'block',width: '55px',marginRight: '5px', background: '#fe2c55',borderRadius: '10%', fontSize: '35px'}} className="group_name">
+    <Text style={{color: 'white',display: 'flex', justifyContent: 'center'}}>{group.title[0]}</Text>
+    </View>
 }
 
 function ActionBtns(props){
@@ -60,9 +60,9 @@ function ActionBtns(props){
   }
     if (action.type === 'like'){
       if (hasLiked === true){
-        return <span><span onClick={handleClick} style={{fontSize:'30px', paddingRight:'10px'}}>{likes }</span><span onClick={handleClick} style={{color: '#2c3e50',paddingRight:'100px'}} className="material-icons"><FavoriteRoundedIcon size={30}/></span></span>
+        return <Text><Text onClick={handleClick} style={{fontSize:'30px', paddingRight:'10px'}}>{likes }</Text><Text onClick={handleClick} style={{color: '#2c3e50',paddingRight:'100px'}} className="material-icons"><FavoriteRoundedIcon size={30}/></Text></Text>
       }else{
-        return <span><span onClick={handleClick} style={{fontSize:'30px', paddingRight:'10px'}}>{likes }</span><span onClick={handleClick} style={{color: '#2c3e50',paddingRight:'100px'}} className="material-icons-outlined"><FavoriteBorderRoundedIcon size={30}/></span></span>
+        return <Text><Text onClick={handleClick} style={{fontSize:'30px', paddingRight:'10px'}}>{likes }</Text><Text onClick={handleClick} style={{color: '#2c3e50',paddingRight:'100px'}} className="material-icons-outlined"><FavoriteBorderRoundedIcon size={30}/></Text></Text>
       }
     }else{
         return ''
@@ -71,21 +71,21 @@ function ActionBtns(props){
 
 function Group(props){
   const {group,token, navigation} = props
-  return <div style={{padding: '3px'}} className='padding'>
-    <div style={{display: 'flex', border: '1px solid #fe2c55',backgroundColor: 'white', padding: '10px'}} className='cats'>
-      <div className="right-part">
-          <div className='middle-part' style={{display:'flex',paddingTop: '5px',paddingBottom: '10px'}}>
+  return <View style={{padding: '3px'}} className='padding'>
+    <View style={{display: 'flex', border: '1px solid #fe2c55',backgroundColor: 'white', padding: '10px'}} className='cats'>
+      <View className="right-part">
+          <View className='middle-part' style={{display:'flex',paddingTop: '5px',paddingBottom: '10px'}}>
             <ProfileImg group={group}/>
-            <strong style={{fontSize:'30px'}}>{ group.title }</strong>
-          </div>
-        <div >{group.about}</div>
+            <Text style={{fontSize:'30px'}}>{ group.title }</Text>
+          </View>
+        <View >{group.about}</View>
         <ActionBtns token={token} group={group} action={{type:'like'}}/>
-        <span style={{fontSize:'30px', paddingRight:'10px'}}>{ group.posts }</span>
+        <Text style={{fontSize:'30px', paddingRight:'10px'}}>{ group.posts }</Text>
         <FontAwesomeIcon onClick = {() => props.navigation.navigate('comment')} className='hover:text-red-500' style={{color:'#2c3e50'}} size={ 20 } icon={faComment} />
-        {/* <span style={{fontSize:'30px', float:'right'}}>view</span> */}
-      </div>
-    </div>
-    </div>
+        {/* <Text style={{fontSize:'30px', float:'right'}}>view</Text> */}
+      </View>
+    </View>
+    </View>
 }
 
 const styles = StyleSheet.create({

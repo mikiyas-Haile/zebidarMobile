@@ -26,14 +26,14 @@ export function CreateStatusComment(props) {
         apiStatusCommentCreate(newVal, statusId,handleBackendUpdate, token)
       }
     
-    return <div style={{backgroundColor:'white',height:height,dislay:'flex'}}>
-      <form onSubmit={handleSubmit}>
+    return <View style={{backgroundColor:'white',height:height,dislay:'flex'}}>
+      {/* <form onSubmit={handleSubmit}>
         <input placeholder='What are you thinking about?' required 
         style={{fontSize:20,backgroundColor:"white",border: 'none', width:width, padding:20,}}    
         ref={Ref}             
         />
         <hr/>
         <button style={{bottom:70,borderRadius:'100%',color: '#2c3e50',right:0,position: 'absolute',border:'1px solid #fe2c55'}} type="submit" className='btn'><FontAwesomeIcon size={ 50 } icon={faPaperPlane} /></button>
-    </form>
-    </div>
+    </form> */}
+    </View>
 }

@@ -9,7 +9,6 @@ export function GroupDetailScreen(props) {
   return (
       <ScrollView>
           <GroupDetail token={token} group={group} navigation={props.navigation}/>
-          <br/><br/>
           <GroupDetailPostComponent token={token} groupId={group.id} group={group} navigation={props.navigation}/>
       </ScrollView>
   )

@@ -36,14 +36,13 @@ export function StatusUpdate(route,navigation , props) {
     }
     return (
         <View>
-            <label>
-                <input type='text' name='body'
+            <View>
+                <TextInput type='text' name='body'
                 value={state.credentials.body} 
                 onChange={inputChanged}
                 />
-            </label>
-            <br/>
-            <button  onClick={Login}>Post</button>
+            </View>
+            <Button  onPress={Login}>Post</Button>
         </View>
     )
 }
@@ -51,7 +50,6 @@ const styles = StyleSheet.create({
     inputStyle:{
         backgroundColor:"white",
         borderColor:"#2c3e50",
-        border: 'none',
         padding: '0',
         margin: '20px',
         color: '#2c3e50'

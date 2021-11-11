@@ -8,7 +8,6 @@ export function StatusDetail(props) {
   return (
       <ScrollView>
           <Detail token={token} statusId={statusId} navigation={props.navigation}/>
-          <br/><br/>
           <CommentsScreen token={token} statusId={statusId} navigation={props.navigation}/>
       </ScrollView>
   )

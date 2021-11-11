@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {url} from '../urls'
-import {StyleSheet, Dimensions,Pressable,Text} from 'react-native'
+import {StyleSheet,TextInput, Dimensions,Pressable,Text,View} from 'react-native'
 const {width, height} = Dimensions.get("screen")
 const host = url()
 export function LoginComponent (props) {
@@ -50,37 +50,35 @@ export function LoginComponent (props) {
         setState({credentials: cred})
     }
     return (
-        <div>
-            <br/><br/><center><h2>Login to Zebidar.</h2></center><br/><br/><br/>
-            {incorrectLogin ? <div style={{backgroundColor:"orange", height:50, alignItems:'center', justifyContent:'center', margin:20, borderRadius:20}}><center><span>Your Username didn't match your password. Please Try again.</span></center></div>: null}
-            <label>
-                <center><input placeholder='Username' style={{width:width/1.3, padding:10, margin:10}} type='text' name='username'
+        <View>
+            <Text>Login to Zebidar.</Text>
+            {incorrectLogin ? <View style={{backgroundColor:"orange", height:50, alignItems:'center', justifyContent:'center', margin:20, borderRadius:20}}><center><Text>Your Username didn't match your password. Please Try again.</Text></center></View>: null}
+            <View>
+                <TextInput placeholder='Username' style={{width:width/1.3, padding:10, margin:10}} type='text' name='username'
                 value={state.credentials.username} 
                 onChange={inputChanged}
-                /></center>
-            </label>
-            {UsernameEmpty ? <div style={{backgroundColor:"orange", height:50, alignItems:'center', justifyContent:'center', margin:20, borderRadius:20}}><center>
-                <span>Please enter your Username</span>
-                </center></div>: null}
+                />
+            </View>
+            {UsernameEmpty ? <View style={{backgroundColor:"orange", height:50, alignItems:'center', justifyContent:'center', margin:20, borderRadius:20}}>
+                <Text>Please enter your Username</Text>
+                </View>: null}
 
-            <br/>
-            <label>
-                <center><input placeholder='Password' style={{width:width/1.3, padding:10, margin:10}} type='password' name='password'
+            <View>
+               <TextInput placeholder='Password' style={{width:width/1.3, padding:10, margin:10}} type='password' name='password'
                 value={state.credentials.password} 
                 onChange={inputChanged}
-                /></center>
-            </label>
-            {PasswordEmpty ? <div style={{backgroundColor:"orange", height:50, alignItems:'center', justifyContent:'center', margin:20, borderRadius:20}}><center><span>Please enter your password</span></center></div>: null}
+                />
+            </View>
+            {PasswordEmpty ? <View style={{backgroundColor:"orange", height:50, alignItems:'center', justifyContent:'center', margin:20, borderRadius:20}}><Text>Please enter your password</Text></View>: null}
 
-            <br/>
             <Pressable style={styles.button} onPress={Login}>
               <Text style={styles.text}>login</Text>
           </Pressable>
-          <center><span style={{fontSize:20}}>don't have an account?</span></center>
+          <Text style={{fontSize:20}}>don't have an account?</Text>
             <Pressable style={styles.button} onPress={() => props.navigation.navigate('register')}>
               <Text style={styles.text}>Register</Text>
           </Pressable>
-        </div>
+        </View>
         )
 }
 

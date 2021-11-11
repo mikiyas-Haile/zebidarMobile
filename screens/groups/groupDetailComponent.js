@@ -28,8 +28,8 @@ export function GroupDetailPostComponent(props){
       }
     
     return <>
-            <div style={{display:'flex'}}>
-              <form onSubmit={handleSubmit}>
+            <View style={{display:'flex'}}>
+              {/* <form onSubmit={handleSubmit}>
                 <input placeholder='What are you thinking about?' required 
                 style={{fontSize:20,border: 'none', width:width/1.4, padding:10,}}    
                 ref={Ref}             
@@ -37,8 +37,8 @@ export function GroupDetailPostComponent(props){
                 <button type="submit" style={{border:'none', background:'none'}} className='btn'>
                   <SendRounded style={{fontSize:40}}/>
                   </button>
-              </form>
-            </div>
+              </form> */}
+            </View>
             <Commentslist token={token} groupId={groupId} navigation={props.navigation} newStatuss={newStatuss}/>
           </>
 }
